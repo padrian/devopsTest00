@@ -1,8 +1,8 @@
 version: "2"
 services:
-    db:
+    couchdb:
         image: couchdb:1.6.1
-        container_name: db
+        container_name: couchdb
         ports:
             - "5984:5984"
         volumes_from:
@@ -12,18 +12,18 @@ services:
         env_file:
             - ./config.env
 
-    app:
+    nginxpy2:
         build:
             context: .
             dockerfile: Dockerfile
-        container_name: app
+        container_name: nginxpy2
         volumes:
             - ./django/app:/var/www/
             - /var/www/app/app/static-files
         expose:
             - "8000"
         depends_on:
-            - db
+            - couchdb
         env_file:
             - ./config.env
     data:

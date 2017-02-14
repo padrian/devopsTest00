@@ -3,11 +3,6 @@ First test 1 for Ehealth Africa
 
 ## docker,nginx,awsEB
 
-upload zip to the AWS elastic beanstalk for provisioning.
-
-setup first container
-
-
 # Troubleshooting Questions 
 
 A) scenario One
