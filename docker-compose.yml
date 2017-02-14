@@ -12,25 +12,10 @@ services:
         env_file:
             - ./config.env
 
-    webserver:
-        build:
-            context: .
-            dockerfile: nginx/Dockerfile
-        container_name: webserver
-        ports:
-            - "80:80"
-            - "443:443"
-        depends_on:
-            - app
-        volumes_from:
-            - app
-        env_file:
-            - ./config.env
-
     app:
         build:
             context: .
-            dockerfile: django/Dockerfile
+            dockerfile: Dockerfile
         container_name: app
         volumes:
             - ./django/app:/var/www/
