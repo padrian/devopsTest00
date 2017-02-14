@@ -1,37 +1,48 @@
 version: "2"
 services:
-  nginxpy2:
-  	image: padrian/nginxpy2
-    depends_on: 
-      - couchdb
-    container_name: nginxpy2
-    env_file:
-      - ./config.env
+    db:
+        image: couchdb:1.6.1
+        container_name: db
+        ports:
+            - "5984:5984"
+        volumes_from:
+            - data
+        depends_on:
+            - data
+        env_file:
+            - ./config.env
 
-  data:
-    image: gliderlabs/alpine:3.3
-    container_name: data
-    volumes:
-      - /usr/local/var/lib/couchdb
-    env_file:
-      - ./config.env
+    webserver:
+        build:
+            context: .
+            dockerfile: nginx/Dockerfile
+        container_name: webserver
+        ports:
+            - "80:80"
+            - "443:443"
+        depends_on:
+            - app
+        volumes_from:
+            - app
+        env_file:
+            - ./config.env
 
-
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: nginxpy2
-    expose:
-      - "8000"
-    depends_on:
-      - couchdb
-
-  couchdb:
-  	image: couchdb
-  	ports:
-  		- "5984:5984"
-    env_file:
-      - ./config.env      
-    depends_on:
-      - data  
+    app:
+        build:
+            context: .
+            dockerfile: django/Dockerfile
+        container_name: app
+        volumes:
+            - ./django/app:/var/www/
+            - /var/www/app/app/static-files
+        expose:
+            - "8000"
+        depends_on:
+            - db
+        env_file:
+            - ./config.env
+    data:
+      image: gliderlabs/alpine:3.3
+      container_name: data
+      volumes:
+        - /usr/local/var/lib/couchdb
