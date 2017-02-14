@@ -9,6 +9,7 @@ services:
 
 install:
   - docker-compose build
+  - docker-compose up -d
   - docker-compose start
 
 after_success:
@@ -18,7 +19,6 @@ after_success:
   - export PATH=$PATH:$HOME/.local/bin
   - eval $(aws ecr get-login --region us-east-1)
   - docker-compose build
-  - docker-compose up -d
   - docker tag nginxpy2:latest [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/nginxpy2:latest
   - docker tag couchdb:latest [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/couchdb:latest
   - docker tag data:latest [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/data:latest
