@@ -11,12 +11,6 @@ install:
   - docker-compose build
   - docker-compose start
 
-before_script:
-    #install any requirements for tests here
-
-script:
-    #run tests here
-
 after_success:
   - docker --version
   - docker-compose --version
@@ -24,11 +18,9 @@ after_success:
   - export PATH=$PATH:$HOME/.local/bin
   - eval $(aws ecr get-login --region us-east-1)
   - docker-compose build
+  - docker tag nginxpy2:latest [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/nginxpy2:latest
+  - docker tag couchdb:latest [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/couchdb:latest
   - docker tag data:latest [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/data:latest
-  - docker tag db:latest [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/db:latest
-  - docker tag app:latest [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/app:latest
-  - docker tag webserver:latest [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/webserver:latest
+  - docker push [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/nginxpy2:latest
+  - docker push [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/couchdb:latest
   - docker push [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/data:latest
-  - docker push [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/db:latest
-  - docker push [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/app:latest
-  - docker push [your_ecr_account].dkr.ecr.us-east-1.amazonaws.com/webserver:latest
