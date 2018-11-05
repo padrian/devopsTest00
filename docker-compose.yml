@@ -27,7 +27,7 @@ services:
         env_file:
             - ./config.env
     data:
-      image: gliderlabs/alpine:3.3
+      image: gliderlabs/alpine:3.8
       container_name: data
       volumes:
         - /usr/local/var/lib/couchdb
